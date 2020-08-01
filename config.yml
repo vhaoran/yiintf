@@ -1,0 +1,73 @@
+microService:
+  # 每一种服务不相同，同类的微服务相同
+  # 本地监听商品，docker中
+  port: 9110
+  # 本地监听主机，docker中
+  host: 0.0.0.0
+  # etct注册端口，docker映射到外部时使用
+  regPort: 9110
+  # etct注册主机，docker映射到外部时使用
+  regHost: 127.0.0.1
+  # 所有微服務相同
+
+log:
+  logLevel: debug
+  # 日志路径
+  # logPath: "./"
+  # 文件名，不含路径
+  fileName: log
+  # 扩展名
+  ext: .log
+
+etcd:
+  hosts:
+    - "192.168.0.201:12379"
+  options:
+    cert:          ""
+    key:           ""
+    caCert:        ""
+    dialTimeout:   30
+    dialKeepAlive: 30
+    username:      ""
+    password:      ""
+postgres:
+  url:  "host=192.168.0.201 user=root dbname=yiuser sslmode=disable password=password"
+  poolMax: 100
+  poolMin:  10
+redis:
+  addrs:
+    - "192.168.0.201:7001"
+    - "192.168.0.201:7002"
+    - "192.168.0.201:7003"
+    - "192.168.0.201:7004"
+    - "192.168.0.201:7005"
+    - "192.168.0.201:7006"
+  password: ""
+  poolSize: 100
+  minIdleConns: 10
+emq:
+  url: ""
+  host: "192.168.0.201"
+  tcpPort: "1883"
+  userName: ""
+  password: ""
+
+mongo:
+  url:   "mongodb://root:password@192.168.0.201:27017,192.168.0.201:27018,192.168.0.201:27019/test?&authSource=admin&slaveOk=true"
+  #url:   "mongodb://192.168.0.201:27017,192.168.0.201:27018,192.168.0.201:27019/test?&slaveOk=true"
+  options:
+    connectTimeout: 10
+    heartbeatInterval: 20
+    maxConnIdleTime:   300
+    maxPoolSize:       100
+    minPoolSize:       10
+    serverSelectionTimeout: 5
+rabbitMq:
+  url: amqp://root:password@192.168.0.201:5672/
+  poolMax: 100
+  poolMin: 10
+qiniu:
+  accessKey: "gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5"
+  secretKey: "EkZHh2f3vLwVw2v3orRsmK25dVWfSy_wDCOofjVD"
+  buckPermanent: "permanent-wlkj"
+  buckTemp: "temporary-wlkj"
