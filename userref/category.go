@@ -8,3 +8,7 @@ type Category struct {
 	Icon   string `json:"icon,omitempty"`
 	SortNo string `json:"sort_no,omitempty"`
 }
+
+func (Category) TableName() string {
+	return "category"
+}
