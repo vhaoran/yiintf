@@ -7,8 +7,10 @@ import (
 type (
 	//商品表 存于es中
 	Product struct {
+		IDOfES      string          `json:"id_of_es,omitempty"`
 		Created     ytime.Date      `json:"created,omitempty"`
 		LastUpdated ytime.Date      `json:"last_updated,omitempty"`
+
 		CateId      int64           `json:"cate_id,omitempty"`
 		CateName    string          `json:"cate_name,omitempty"`
 		Name        string          `json:"name,omitempty"`
