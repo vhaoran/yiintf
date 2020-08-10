@@ -9,4 +9,3 @@ require (
 )
 
 replace github.com/vhaoran/vchat => ../vchat
-
