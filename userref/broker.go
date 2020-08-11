@@ -27,6 +27,11 @@ type Broker struct {
 	AccountType int
 	AccountCode string `json:"account_code" gorm:"name:account_code;type:text;null;"`
 
+	//使用平台商城 0:否 1：是
+	EnableMall int
+	//使用平台大师 0:否 1：是
+	EnableMaster int
+
 	//启用状态（0：停用 1：启用,默认启用）
 	Enabled int
 }
