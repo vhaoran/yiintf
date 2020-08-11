@@ -32,6 +32,8 @@ type BrokerInfo struct {
 	//使用平台大师 0:否 1：是
 	EnableMaster int
 
+	ServiceCode string `json:"service_code" gorm:"name:service_code;type:varchar(100);null;unique_index"`
+
 	//启用状态（0：停用 1：启用,默认启用）
 	Enabled int
 }
