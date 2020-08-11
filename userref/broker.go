@@ -5,7 +5,7 @@ import (
 )
 
 //代理商家
-type Broker struct {
+type BrokerInfo struct {
 	ypg.BaseModel
 	ID int64
 	//主体名称
@@ -36,6 +36,6 @@ type Broker struct {
 	Enabled int
 }
 
-func (Broker) TableName() string {
-	return "broker"
+func (BrokerInfo) TableName() string {
+	return "broker_info"
 }
