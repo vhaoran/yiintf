@@ -32,4 +32,5 @@ type UserInfoRef struct {
 	//身份证号
 	IdCard string `json:"id_card" gorm:"type:varchar(20)"`
 	//商城地址
+	BrokerID int64 `json:"broker_id" gorm:"name:broker_id;null;index;"`
 }
