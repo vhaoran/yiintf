@@ -10,7 +10,7 @@ type UserAddr struct {
 	//手机号
 	Mobile string
 	//地址
-	Address string
+	AddrCommon
 	//黙认地址
 	IsDefault int
 }
