@@ -14,3 +14,7 @@ type UserAddr struct {
 	//黙认地址
 	IsDefault int
 }
+
+func (UserAddr) TableName() string {
+	return "user_addr"
+}
