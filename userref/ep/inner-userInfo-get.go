@@ -6,11 +6,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-kit/kit/endpoint"
 	tran "github.com/go-kit/kit/transport/http"
 	"github.com/vhaoran/vchat/lib/ykit"
+
+	user_ref "github.com/vhaoran/yiintf/userref"
 )
 
 const (
@@ -111,4 +114,33 @@ func (r *InnerUserInfoGetH) ProxySD() endpoint.Endpoint {
 		InnerUserInfoGet_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse)
+}
+
+//只用于内部调用 ，不从风头调用
+var once_InnserUserInfoGet sync.Once
+var local_InnserUserInfoGet_EP endpoint.Endpoint
+
+func (r *InnerUserInfoGetH) Call(uid int64) (*user_ref.UserInfoRef, error) {
+	once_InnserUserInfoGet.Do(func() {
+		local_InnserUserInfoGet_EP = new(InnerUserInfoGetH).ProxySD()
+	})
+	//
+	ep := local_InnserUserInfoGet_EP
+	//
+	in := &InnerUserInfoGetIn{
+		UID: uid,
+	}
+	result, err := ep(context.Background(), in)
+
+	if err != nil {
+		return nil, err
+	}
+
+	i := result.(*ykit.Result)
+
+	if i.Data != nil {
+		return i.Data.(*user_ref.UserInfoRef), nil
+	}
+
+	return nil, err
 }
