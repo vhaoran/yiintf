@@ -1,4 +1,6 @@
-package ep
+
+
+
 
 import (
 	"context"
@@ -11,54 +13,51 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	tran "github.com/go-kit/kit/transport/http"
 	"github.com/vhaoran/vchat/lib/ykit"
-
-	"github.com/vhaoran/yiintf/userref"
 )
 
 const (
-	InnerProductInfoGet_H_PATH = "/InnerProductInfoGet"
+	$type$_H_PATH = "/GetUserFriendsInner"
 )
 
 //获取用户所有好友
 type (
-	InnerProductInfoGetService interface {
-		Exec(in *InnerProductInfoGetIn) (*InnerProductInfoGetOut, error)
+    $type$Service interface {
+		Exec(in *$type$In) ([]*$type$Out, error)
 	}
 
 	//input data
-	InnerProductInfoGetIn struct {
-		IDOfES string `json:"id_of_es,omitempty"`
+	$type$In struct {
+
 	}
 
 	//output data
-	InnerProductInfoGetOut struct {
-		*userref.Product
+	$type$Out struct {
 	}
 
 	// handler implements
-	InnerProductInfoGetH struct {
+	$type$H struct {
 		base ykit.RootTran
 	}
 )
 
-func (r *InnerProductInfoGetH) MakeLocalEndpoint(svc InnerProductInfoGetService) endpoint.Endpoint {
+    func (r *$type$H) MakeLocalEndpoint(svc $type$Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
 
-		in := request.(*InnerProductInfoGetIn)
+		in := request.(*$type$In)
 		return svc.Exec(in)
 	}
 }
 
 //个人实现,参数不能修改
-func (r *InnerProductInfoGetH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
-	return r.base.DecodeRequest(new(InnerProductInfoGetIn), ctx, req)
+func (r *$type$H) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+	return r.base.DecodeRequest(new($type$In), ctx, req)
 }
 
 //个人实现,参数不能修改
-func (r *InnerProductInfoGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
-	var response *InnerProductInfoGetOut
+func (r *$type$H) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
+	var response []*$type$Out
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
@@ -66,7 +65,7 @@ func (r *InnerProductInfoGetH) DecodeResponse(_ context.Context, res *http.Respo
 }
 
 //handler for router，微服务本地接口，
-func (r *InnerProductInfoGetH) HandlerLocal(service InnerProductInfoGetService,
+func (r *$type$H) HandlerLocal(service $type$Service,
 	mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 
@@ -85,39 +84,39 @@ func (r *InnerProductInfoGetH) HandlerLocal(service InnerProductInfoGetService,
 }
 
 //sd,proxy实现,用于etcd自动服务发现时的handler
-func (r *InnerProductInfoGetH) HandlerSD(mid []endpoint.Middleware,
+func (r *$type$H) HandlerSD(mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 	return r.base.HandlerSD(
 		context.Background(),
-		msTag,
+		MSTAG,
 		"POST",
-		InnerProductInfoGet_H_PATH,
+		GetUserFriendsInner_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse,
 		mid,
 		options...)
 }
 
-func (r *InnerProductInfoGetH) ProxySD() endpoint.Endpoint {
+func (r *$type$H) ProxySD() endpoint.Endpoint {
 	return r.base.ProxyEndpointSD(
 		context.Background(),
-		msTag,
+		MSTAG,
 		"POST",
-		InnerProductInfoGet_H_PATH,
+		GetUserFriendsInner_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse)
 }
 
 //只用于内部调用 ，不从风头调用
-var once_InnerProductInfoGet sync.Once
-var local_InnerProductInfoGet_EP endpoint.Endpoint
+var once_$type$ sync.Once
+var local_$type$_EP endpoint.Endpoint
 
-func (r *InnerProductInfoGetH) Call(in *InnerProductInfoGetIn) (*InnerProductInfoGetOut, error) {
-	once_InnerProductInfoGet.Do(func() {
-		local_InnerProductInfoGet_EP = new(InnerProductInfoGetH).ProxySD()
+func (r *$type$H) Call(in *$type$In) ([]*$type$Out, error) {
+	once_$type$.Do(func() {
+		local_$type$_EP = new($type$H).ProxySD()
 	})
 	//
-	ep := local_InnerProductInfoGet_EP
+	ep := local_$type$_EP
 	//
 	result, err := ep(context.Background(), in)
 
@@ -125,5 +124,6 @@ func (r *InnerProductInfoGetH) Call(in *InnerProductInfoGetIn) (*InnerProductInf
 		return nil, err
 	}
 
-	return result.(*InnerProductInfoGetOut), nil
+	return result.([]*$type$Out), nil
 }
+
