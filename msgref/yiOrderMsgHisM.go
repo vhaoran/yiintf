@@ -30,9 +30,9 @@ type YiOrderMsgHis struct {
 	CreateDateInt int64      `json:"create_date_int"   bson:"create_date_int"`
 
 	//消息类型 0:文本 1：语音
-	MsgType int `json:"msg_type"   bson:"msg_type"`
+	ContentType int `json:"content_type"   bson:"content_type"`
 	//消息类型 0:文本 1：语音时表示为一个路径
-	Msg string `json:"msg"   bson:"msg"`
+	Content string `json:"content"   bson:"content"`
 
 	Ack bool `json:"ack"   bson:"ack"`
 }
