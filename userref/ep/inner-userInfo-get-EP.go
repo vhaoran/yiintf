@@ -1,6 +1,5 @@
 package ep
 
-//last update date 2020-04-21
 import (
 	"context"
 	"encoding/json"
@@ -13,30 +12,28 @@ import (
 	tran "github.com/go-kit/kit/transport/http"
 	"github.com/vhaoran/vchat/lib/ykit"
 
-	user_ref "github.com/vhaoran/yiintf/userref"
+	"github.com/vhaoran/yiintf/userref"
 )
 
 const (
 	InnerUserInfoGet_H_PATH = "/InnerUserInfoGet"
 )
 
-// postman
+//获取用户所有好友
 type (
 	InnerUserInfoGetService interface {
-		Exec(ctx context.Context, in *InnerUserInfoGetIn) (*ykit.Result, error)
+		Exec(in *InnerUserInfoGetIn) (*InnerUserInfoGetOut, error)
 	}
 
-	//input  data
+	//input data
 	InnerUserInfoGetIn struct {
-		UID int64 `json:"uid"`
+		UID int64
 	}
 
 	//output data
-	//Result struct {
-	//	Code int         `json:"code"`
-	//	Msg  string      `json:"msg"`
-	//	Data interface{} `json:"data"`
-	//}
+	InnerUserInfoGetOut struct {
+		userref.UserInfoRef
+	}
 
 	// handler implements
 	InnerUserInfoGetH struct {
@@ -46,11 +43,11 @@ type (
 
 func (r *InnerUserInfoGetH) MakeLocalEndpoint(svc InnerUserInfoGetService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		fmt.Println("#############  InnerUserInfoGet ###########")
+		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
 
 		in := request.(*InnerUserInfoGetIn)
-		return svc.Exec(ctx, in)
+		return svc.Exec(in)
 	}
 }
 
@@ -61,7 +58,7 @@ func (r *InnerUserInfoGetH) DecodeRequest(ctx context.Context, req *http.Request
 
 //个人实现,参数不能修改
 func (r *InnerUserInfoGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
-	var response ykit.Result
+	var response *InnerUserInfoGetOut
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
@@ -78,16 +75,11 @@ func (r *InnerUserInfoGetH) HandlerLocal(service InnerUserInfoGetService,
 		ep = f(ep)
 	}
 
-	before := tran.ServerBefore(ykit.Jwt2ctx())
-	opts := make([]tran.ServerOption, 0)
-	opts = append(opts, before)
-	opts = append(opts, options...)
-
 	handler := tran.NewServer(
 		ep,
 		r.DecodeRequest,
 		r.base.EncodeResponse,
-		opts...)
+		options...)
 	//handler = loggingMiddleware()
 	return handler
 }
@@ -117,30 +109,21 @@ func (r *InnerUserInfoGetH) ProxySD() endpoint.Endpoint {
 }
 
 //只用于内部调用 ，不从风头调用
-var once_InnserUserInfoGet sync.Once
-var local_InnserUserInfoGet_EP endpoint.Endpoint
+var once_InnerUserInfoGet sync.Once
+var local_InnerUserInfoGet_EP endpoint.Endpoint
 
-func (r *InnerUserInfoGetH) Call(uid int64) (*user_ref.UserInfoRef, error) {
-	once_InnserUserInfoGet.Do(func() {
-		local_InnserUserInfoGet_EP = new(InnerUserInfoGetH).ProxySD()
+func (r *InnerUserInfoGetH) Call(in *InnerUserInfoGetIn) (*InnerUserInfoGetOut, error) {
+	once_InnerUserInfoGet.Do(func() {
+		local_InnerUserInfoGet_EP = new(InnerUserInfoGetH).ProxySD()
 	})
 	//
-	ep := local_InnserUserInfoGet_EP
+	ep := local_InnerUserInfoGet_EP
 	//
-	in := &InnerUserInfoGetIn{
-		UID: uid,
-	}
 	result, err := ep(context.Background(), in)
 
 	if err != nil {
 		return nil, err
 	}
 
-	i := result.(*ykit.Result)
-
-	if i.Data != nil {
-		return i.Data.(*user_ref.UserInfoRef), nil
-	}
-
-	return nil, err
+	return result.(*InnerUserInfoGetOut), nil
 }
