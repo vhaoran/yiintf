@@ -122,8 +122,12 @@ func (r *InnerUserInfoGetH) Call(in *InnerUserInfoGetIn) (*InnerUserInfoGetOut, 
 	result, err := ep(context.Background(), in)
 
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
 
-	return result.(*InnerUserInfoGetOut), nil
+	if result != nil {
+		return result.(*InnerUserInfoGetOut), nil
+	}
+
+	return nil, nil
 }
