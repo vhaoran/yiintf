@@ -7,19 +7,19 @@ import (
 type (
 	//商品表 存于es中
 	Product struct {
-		IDOfES      string          `json:"id_of_es,omitempty"`
-		Created     ytime.Date      `json:"created,omitempty"`
-		LastUpdated ytime.Date      `json:"last_updated,omitempty"`
+		IDOfES      string          `json:"id_of_es"`
+		Created     ytime.Date      `json:"created"`
+		LastUpdated ytime.Date      `json:"last_updated"`
 
-		CateId      int64           `json:"cate_id,omitempty"`
-		CateName    string          `json:"cate_name,omitempty"`
-		Name        string          `json:"name,omitempty"`
-		Remark      string          `json:"remark,omitempty"`
-		KeyWord     string          `json:"key_word,omitempty"`
+		CateId      int64           `json:"cate_id"`
+		CateName    string          `json:"cate_name"`
+		Name        string          `json:"name"`
+		Remark      string          `json:"remark"`
+		KeyWord     string          `json:"key_word"`
 		ImageMain   string          `json:"image_main"`
 		Images      []*ProductImage `json:"images"`
 		Colors      []*ProductColor `json:"colors"`
-		Enabled     bool            `json:"enabled,omitempty"`
+		Enabled     bool            `json:"enabled"`
 	}
 
 	ProductImage struct {

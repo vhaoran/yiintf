@@ -26,9 +26,9 @@ type (
 	//input data
 	MobileMsgInnerIn struct {
 		//
-		Action int    `json:"action,omitempty"`
-		Mobile string `json:"mobile,omitempty"`
-		Text   string `json:"text,omitempty"`
+		Action int    `json:"action"`
+		Mobile string `json:"mobile"`
+		Text   string `json:"text"`
 	}
 
 	//output data

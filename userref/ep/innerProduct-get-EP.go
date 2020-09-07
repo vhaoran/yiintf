@@ -27,7 +27,7 @@ type (
 
 	//input data
 	InnerProductInfoGetIn struct {
-		IDOfES string `json:"id_of_es,omitempty"`
+		IDOfES string `json:"id_of_es"`
 	}
 
 	//output data

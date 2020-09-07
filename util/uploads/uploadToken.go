@@ -28,7 +28,7 @@ type (
 	//input data
 	UploadTokenIn struct {
 		//0 : default,1 hours other: N hour
-		Expired int `json:"expired,omitempty"`
+		Expired int `json:"expired"`
 	}
 
 	//output data

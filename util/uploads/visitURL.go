@@ -26,8 +26,8 @@ type (
 
 	//input data
 	VisitURLIn struct {
-		Key     string `json:"key,omitempty"`
-		Expired int    `json:"expired,omitempty"`
+		Key     string `json:"key"`
+		Expired int    `json:"expired"`
 	}
 
 	//output data
