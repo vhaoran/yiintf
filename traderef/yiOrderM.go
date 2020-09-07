@@ -3,6 +3,7 @@ package traderef
 import (
 	"time"
 
+	"github.com/vhaoran/vchat/common/ytime"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -57,7 +58,7 @@ type YiOrder struct {
 //六爻
 type YiOrderLiuYao struct {
 	//授卦时间
-	YaoDate time.Time `json:"yao_date"   bson:"yao_date"`
+	YaoDate ytime.Date `json:"yao_date"   bson:"yao_date"`
 	//
 	YaoCode string `json:"yao_code"   bson:"yao_code"`
 }
