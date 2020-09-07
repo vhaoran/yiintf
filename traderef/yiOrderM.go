@@ -73,10 +73,10 @@ type YiOrderSiZhu struct {
 	IsMale bool `json:"is_male"   bson:"is_male"`
 
 	Year   int `json:"year"   bson:"year"`
-	Month  int
-	Day    int
-	Hour   int
-	Minute int
+	Month  int `json:"month"   bson:"month"`
+	Day    int `json:"day"   bson:"day"`
+	Hour   int `json:"hour"   bson:"hour"`
+	Minute int `json:"minute"   bson:"minute"`
 }
 
 //合婚
