@@ -7,7 +7,7 @@ import (
 //代理商家
 type BrokerInfo struct {
 	ypg.BaseModel
-	ID int64
+	ID int64 `json:"id"`
 	//主体名称
 	Name string `json:"name" gorm:"name:name;type:text;null;unique_index;"`
 	//主体简介
@@ -16,7 +16,7 @@ type BrokerInfo struct {
 	Icon string `json:"icon" gorm:"name:icon;type:text;null;"`
 
 	//拥有者id,来自于userInfo
-	OwnerID       int64
+	OwnerID       int64  `json:"owner_id" gorm:"name:owner_id;null;"`
 	OwnerUserCode string `json:"owner_user_code" gorm:"name:owner_user_code;type:varchar(100);null;"`
 	OwnerNick     string `json:"owner_nick" gorm:"name:owner_nick;type:text;null;"`
 	OwnerIcon     string `json:"owner_icon" gorm:"name:owner_icon;type:text;null;"`
