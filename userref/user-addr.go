@@ -6,9 +6,9 @@ type UserAddr struct {
 	//用户id
 	UID int64 `json:"uid" gorm:"name:uid;null;"`
 	//收货人
-	ContactPerson string
+	ContactPerson string `json:"contact_person"`
 	//手机号
-	Mobile string
+	Mobile string `json:"mobile"`
 	//地址
 	AddrCommon
 	//黙认地址
