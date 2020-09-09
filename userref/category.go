@@ -6,7 +6,7 @@ type Category struct {
 	ID     int64  `json:"id"`
 	Name   string `json:"name"`
 	Icon   string `json:"icon"`
-	SortNo string `json:"sort_no"`
+	SortNo int    `json:"sort_no"`
 }
 
 func (Category) TableName() string {
