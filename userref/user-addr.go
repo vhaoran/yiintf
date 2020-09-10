@@ -12,7 +12,7 @@ type UserAddr struct {
 	//地址
 	AddrCommon
 	//黙认地址
-	IsDefault int `json:"is_default,omitempty"`
+	IsDefault int `json:"is_default"`
 }
 
 func (UserAddr) TableName() string {
