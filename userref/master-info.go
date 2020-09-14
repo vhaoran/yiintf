@@ -11,10 +11,13 @@ import (
 //---------------------------------------------
 //大师基本信息
 type MasterInfoRef struct {
-	UID        int64      `json:"uid"`
-	UserCode   string     `json:"user_code"`
-	Nick       string     `json:"nick" gorm:"name:nick;type:text;null;"`
-	Icon       string     `json:"icon" gorm:"name:icon;type:text;null;"`
+	UID      int64  `json:"uid"`
+	UserCode string `json:"user_code"`
+	Nick     string `json:"nick" gorm:"name:nick;type:text;null;"`
+	Icon     string `json:"icon" gorm:"name:icon;type:text;null;"`
+
+	Brief string `json:"brief" gorm:"name:brief;type:text;null;"`
+
 	Rate       int64      `json:"rate"`
 	SignDate   ytime.Date `json:"sign_date"`
 	BestRate   int64      `json:"best_rate"`
