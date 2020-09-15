@@ -10,3 +10,8 @@ require (
 )
 
 replace github.com/vhaoran/vchat => ../vchat
+
+replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
+
+// 处理etcd编译出错
+replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
