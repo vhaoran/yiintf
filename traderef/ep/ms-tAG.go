@@ -1,3 +1,3 @@
 package ep
 
-const msTag = "/yi/msg"
+const msTag = "/yi/trade"
