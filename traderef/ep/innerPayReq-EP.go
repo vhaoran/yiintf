@@ -38,7 +38,7 @@ type (
 		URL string `json:"url"`
 		M   ykit.M `json:"m"`
 	}
-	
+
 	// handler implements
 	InnerPayReqH struct {
 		base ykit.RootTran
@@ -58,6 +58,15 @@ func (r *InnerPayReqH) MakeLocalEndpoint(svc InnerPayReqService) endpoint.Endpoi
 //个人实现,参数不能修改
 func (r *InnerPayReqH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
 	return r.base.DecodeRequest(new(InnerPayReqIn), ctx, req)
+	//if err != nil{
+	//	return dst,err
+	//}
+	//
+	//if dst != nil{
+	//	obj := dst.(*InnerPayReqIn)
+	//	obj.IP = g.GetClientIP(req)
+	//}
+	//return dst,
 }
 
 //个人实现,参数不能修改
