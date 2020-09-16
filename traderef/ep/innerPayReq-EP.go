@@ -10,6 +10,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-kit/kit/endpoint"
 	tran "github.com/go-kit/kit/transport/http"
+	"github.com/iGoogle-ink/gopay/wechat"
 	"github.com/vhaoran/vchat/lib/ykit"
 )
 
@@ -35,8 +36,9 @@ type (
 
 	//output data
 	InnerPayReqOut struct {
-		URL string `json:"url"`
-		M   ykit.M `json:"m"`
+		URL  string                       `json:"url"`
+		Data *wechat.UnifiedOrderResponse `json:"data"`
+		Err  error                        `json:"err,omitempty"`
 	}
 
 	// handler implements
