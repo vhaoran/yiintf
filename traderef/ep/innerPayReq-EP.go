@@ -38,7 +38,7 @@ type (
 		//支付的url
 		Url string `json:"url"`
 		//错误
-		Err error `json:"err,omitempty"`
+		ErrStr string `json:"err_str"`
 	}
 
 	// handler implements
