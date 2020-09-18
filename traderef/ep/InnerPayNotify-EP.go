@@ -10,6 +10,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-kit/kit/endpoint"
 	tran "github.com/go-kit/kit/transport/http"
+	"github.com/iGoogle-ink/gopay"
 	"github.com/vhaoran/vchat/lib/ykit"
 )
 
@@ -25,6 +26,8 @@ type (
 
 	//input data
 	InnerPayNotifyIn struct {
+		WxData gopay.BodyMap `json:"wx_data"`
+
 		//id
 		OutTradeNo string `json:"out_trade_no"`
 		//支付类型
