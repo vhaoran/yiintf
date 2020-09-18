@@ -9,7 +9,7 @@ type BrokerInfo struct {
 	ypg.BaseModel
 	ID int64 `json:"id"`
 	//主体名称
-	Name string `json:"name" gorm:"name:name;type:text;null;unique_index;"`
+	Name string `json:"name" gorm:"name:name;type:text;null;"`
 	//主体简介
 	Brief string `json:"" gorm:"name:;type:text;null;"`
 	//头像路径
@@ -24,15 +24,15 @@ type BrokerInfo struct {
 	//提现帐号，只能来自微信或支付宝
 	//0 支付宝 1：微信
 	//只能是两者之一
-	AccountType int
+	AccountType int    `json:"account_type" gorm:"name:account_type;null;"`
 	AccountCode string `json:"account_code" gorm:"name:account_code;type:text;null;"`
 
 	//使用平台商城 0:否 1：是
-	EnableMall int
+	EnableMall int `json:"enable_mall"`
 	//使用平台大师 0:否 1：是
-	EnableMaster int
+	EnableMaster int `json:"enable_master"`
 
-	ServiceCode string `json:"service_code" gorm:"name:service_code;type:varchar(100);null;unique_index"`
+	ServiceCode string `json:"service_code" gorm:"name:service_code;type:varchar(100);null;"`
 
 	//启用状态（0：停用 1：启用,默认启用）
 	Enabled int
