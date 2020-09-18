@@ -11,7 +11,7 @@ type BrokerInfo struct {
 	//主体名称
 	Name string `json:"name" gorm:"name:name;type:text;null;"`
 	//主体简介
-	Brief string `json:"" gorm:"name:;type:text;null;"`
+	Brief string `json:"brief" gorm:"name:;type:text;null;"`
 	//头像路径
 	Icon string `json:"icon" gorm:"name:icon;type:text;null;"`
 
@@ -35,7 +35,7 @@ type BrokerInfo struct {
 	ServiceCode string `json:"service_code" gorm:"name:service_code;type:varchar(100);null;"`
 
 	//启用状态（0：停用 1：启用,默认启用）
-	Enabled int
+	Enabled int `json:"enabled"`
 }
 
 func (BrokerInfo) TableName() string {
