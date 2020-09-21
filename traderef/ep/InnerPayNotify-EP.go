@@ -18,7 +18,7 @@ const (
 	InnerPayNotify_H_PATH = "/InnerPayNotify"
 )
 
-//获取用户所有好友
+//wechat pay notify
 type (
 	InnerPayNotifyService interface {
 		Exec(in *InnerPayNotifyIn) (*InnerPayNotifyOut, error)
