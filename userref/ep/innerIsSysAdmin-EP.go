@@ -35,7 +35,8 @@ type (
 
 	//output data
 	InnerIsSysAdminOut struct {
-		bool
+		OK     bool   `json:"ok"`
+		ErrStr string `json:"err_str,omitempty"`
 	}
 
 	// handler implements
@@ -125,7 +126,10 @@ func (r *InnerIsSysAdminH) Call(in *InnerIsSysAdminIn) (*InnerIsSysAdminOut, err
 	result, err := ep(context.Background(), in)
 
 	if err != nil {
-		return nil, err
+		return &InnerIsSysAdminOut{
+			OK:     false,
+			ErrStr: err.Error(),
+		}, nil
 	}
 
 	return result.(*InnerIsSysAdminOut), nil
