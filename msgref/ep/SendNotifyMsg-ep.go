@@ -39,7 +39,7 @@ type (
 
 	//output data
 	InnerSendNotifyMsgOut struct {
-		OK     bool   `json:"ok"`
+		RetID  string `json:"ret_id"`
 		ErrStr string `json:"err_str"`
 	}
 
