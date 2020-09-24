@@ -22,50 +22,50 @@ import (
 //--------------------------------------------- 
 
 const (
-	SendNotifyMsg_H_PATH = "/SendNotifyMsg"
+	InnerSendNotifyMsg_H_PATH = "/InnerSendNotifyMsg"
 )
 
 //获取用户所有好友
 type (
-	SendNotifyMsgService interface {
-		Exec(in *SendNotifyMsgIn) (*SendNotifyMsgOut, error)
+	InnerSendNotifyMsgService interface {
+		Exec(in *InnerSendNotifyMsgIn) (*InnerSendNotifyMsgOut, error)
 	}
 
 	//input data
-	SendNotifyMsgIn struct {
+	InnerSendNotifyMsgIn struct {
 		msgref.NotifyBody
 	}
 
 	//output data
-	SendNotifyMsgOut struct {
+	InnerSendNotifyMsgOut struct {
 		OK     bool   `json:"ok"`
 		ErrStr string `json:"err_str"`
 	}
 
 	// handler implements
-	SendNotifyMsgH struct {
+	InnerSendNotifyMsgH struct {
 		base ykit.RootTran
 	}
 )
 
-func (r *SendNotifyMsgH) MakeLocalEndpoint(svc SendNotifyMsgService) endpoint.Endpoint {
+func (r *InnerSendNotifyMsgH) MakeLocalEndpoint(svc InnerSendNotifyMsgService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
 
-		in := request.(*SendNotifyMsgIn)
+		in := request.(*InnerSendNotifyMsgIn)
 		return svc.Exec(in)
 	}
 }
 
 //个人实现,参数不能修改
-func (r *SendNotifyMsgH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
-	return r.base.DecodeRequest(new(SendNotifyMsgIn), ctx, req)
+func (r *InnerSendNotifyMsgH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+	return r.base.DecodeRequest(new(InnerSendNotifyMsgIn), ctx, req)
 }
 
 //个人实现,参数不能修改
-func (r *SendNotifyMsgH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
-	var response *SendNotifyMsgOut
+func (r *InnerSendNotifyMsgH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
+	var response *InnerSendNotifyMsgOut
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (r *SendNotifyMsgH) DecodeResponse(_ context.Context, res *http.Response) (
 }
 
 //handler for router，微服务本地接口，
-func (r *SendNotifyMsgH) HandlerLocal(service SendNotifyMsgService,
+func (r *InnerSendNotifyMsgH) HandlerLocal(service InnerSendNotifyMsgService,
 	mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 
@@ -92,39 +92,39 @@ func (r *SendNotifyMsgH) HandlerLocal(service SendNotifyMsgService,
 }
 
 //sd,proxy实现,用于etcd自动服务发现时的handler
-func (r *SendNotifyMsgH) HandlerSD(mid []endpoint.Middleware,
+func (r *InnerSendNotifyMsgH) HandlerSD(mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 	return r.base.HandlerSD(
 		context.Background(),
 		msTag,
 		"POST",
-		SendNotifyMsg_H_PATH,
+		InnerSendNotifyMsg_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse,
 		mid,
 		options...)
 }
 
-func (r *SendNotifyMsgH) ProxySD() endpoint.Endpoint {
+func (r *InnerSendNotifyMsgH) ProxySD() endpoint.Endpoint {
 	return r.base.ProxyEndpointSD(
 		context.Background(),
 		msTag,
 		"POST",
-		SendNotifyMsg_H_PATH,
+		InnerSendNotifyMsg_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse)
 }
 
 //只用于内部调用 ，不从风头调用
-var once_SendNotifyMsg sync.Once
-var local_SendNotifyMsg_EP endpoint.Endpoint
+var once_InnerSendNotifyMsg sync.Once
+var local_InnerSendNotifyMsg_EP endpoint.Endpoint
 
-func (r *SendNotifyMsgH) Call(in *SendNotifyMsgIn) (*SendNotifyMsgOut, error) {
-	once_SendNotifyMsg.Do(func() {
-		local_SendNotifyMsg_EP = new(SendNotifyMsgH).ProxySD()
+func (r *InnerSendNotifyMsgH) Call(in *InnerSendNotifyMsgIn) (*InnerSendNotifyMsgOut, error) {
+	once_InnerSendNotifyMsg.Do(func() {
+		local_InnerSendNotifyMsg_EP = new(InnerSendNotifyMsgH).ProxySD()
 	})
 	//
-	ep := local_SendNotifyMsg_EP
+	ep := local_InnerSendNotifyMsg_EP
 	//
 	result, err := ep(context.Background(), in)
 
@@ -132,5 +132,5 @@ func (r *SendNotifyMsgH) Call(in *SendNotifyMsgIn) (*SendNotifyMsgOut, error) {
 		return nil, err
 	}
 
-	return result.(*SendNotifyMsgOut), nil
+	return result.(*InnerSendNotifyMsgOut), nil
 }
