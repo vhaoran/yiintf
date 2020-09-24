@@ -33,6 +33,7 @@ type (
 
 	//input data
 	InnerSendNotifyMsgIn struct {
+		To int64 `json:"to"`
 		msgref.NotifyBody
 	}
 
