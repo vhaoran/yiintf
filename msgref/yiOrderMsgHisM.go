@@ -23,7 +23,7 @@ type YiOrderMsgHis struct {
 	//用户头像
 	ToIcon string `json:"to_icon"   bson:"to_icon"`
 
-	IDOfYiOrder string `json:"id_of_yi_order"`
+	IDOfYiOrder string `json:"id_of_yi_order"   bson:"id_of_yi_order" `
 
 	//消息时间
 	CreateDate    ytime.Date `json:"create_date"   bson:"create_date"`
