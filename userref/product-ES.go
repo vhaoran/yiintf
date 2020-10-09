@@ -7,19 +7,22 @@ import (
 type (
 	//商品表 存于es中
 	Product struct {
-		IDOfES      string          `json:"id_of_es"`
-		Created     ytime.Date      `json:"created"`
-		LastUpdated ytime.Date      `json:"last_updated"`
+		IDOfES      string     `json:"id_of_es"`
+		Created     ytime.Date `json:"created"`
+		LastUpdated ytime.Date `json:"last_updated"`
 
-		CateId      int64           `json:"cate_id"`
-		CateName    string          `json:"cate_name"`
-		Name        string          `json:"name"`
-		Remark      string          `json:"remark"`
-		KeyWord     string          `json:"key_word"`
-		ImageMain   string          `json:"image_main"`
-		Images      []*ProductImage `json:"images"`
-		Colors      []*ProductColor `json:"colors"`
-		Enabled     bool            `json:"enabled"`
+		CateId    int64           `json:"cate_id"`
+		CateName  string          `json:"cate_name"`
+		Name      string          `json:"name"`
+		Remark    string          `json:"remark"`
+		KeyWord   string          `json:"key_word"`
+		ImageMain string          `json:"image_main"`
+		Images    []*ProductImage `json:"images"`
+		Colors    []*ProductColor `json:"colors"`
+		Enabled   bool            `json:"enabled"`
+
+		//访问次数，在每次get时，值加1，默认为0
+		VisitCount int64 `json:"visit_count"`
 	}
 
 	ProductImage struct {
