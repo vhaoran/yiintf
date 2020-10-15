@@ -37,9 +37,11 @@ type (
 		// web_mobile_recharge 网站手机号充值
 		BType string `json:"b_type"`
 		//帐号类型    0：支付宝 1：微信
-		AccType int     `json:"acc_type"`
-		TradeNo string  `json:"trade_no"`
-		Amt     float64 `json:"amt"`
+		AccType int    `json:"acc_type"`
+		TradeNo string `json:"trade_no"`
+		//通过web充值时，需要填入手机号
+		Mobile string  `json:"mobile"`
+		Amt    float64 `json:"amt"`
 	}
 
 	//output data
