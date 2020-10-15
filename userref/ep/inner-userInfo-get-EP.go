@@ -27,7 +27,8 @@ type (
 
 	//input data
 	InnerUserInfoGetIn struct {
-		UID int64
+		UID    int64  `json:"uid"`
+		Mobile string `json:"mobile"`
 	}
 
 	//output data

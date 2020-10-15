@@ -25,9 +25,18 @@ type (
 
 	//input data
 	InnerPayReqIn struct {
-		IP      string  `json:"ip"`
-		UID     int64   `json:"uid"`
-		BType   string  `json:"b_type"`
+		IP  string `json:"ip"`
+		UID int64  `json:"uid"`
+		// 业务类型
+		// p_order   商城订单付款
+		// yi_order  大师订单付款
+		// bbs_prize 悬赏贴付款
+		// bbs_vie   闪断贴付款
+		// recharge  充值,充值时不需要传入trade_no
+		// master_draw_money 大师提现
+		// web_mobile_recharge 网站手机号充值
+		BType string `json:"b_type"`
+		//帐号类型    0：支付宝 1：微信
 		AccType int     `json:"acc_type"`
 		TradeNo string  `json:"trade_no"`
 		Amt     float64 `json:"amt"`
