@@ -56,11 +56,15 @@ type YiOrder struct {
 
 //六爻
 type YiOrderLiuYao struct {
+	//true:男性 false:女性
+	IsMale bool `json:"is_male"   bson:"is_male"`
+
 	//授卦时间
-	Year  int `json:"year"   bson:"year"`
-	Month int `json:"month"   bson:"month"`
-	Day   int `json:"day"   bson:"day"`
-	Hour  int `json:"hour"   bson:"hour"`
+	Year   int `json:"year"   bson:"year"`
+	Month  int `json:"month"   bson:"month"`
+	Day    int `json:"day"   bson:"day"`
+	Hour   int `json:"hour"   bson:"hour"`
+	Minute int `json:"minute"   bson:"minute"`
 	//
 	YaoCode string `json:"yao_code"   bson:"yao_code"`
 }
