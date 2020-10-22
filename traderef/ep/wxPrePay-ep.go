@@ -86,7 +86,7 @@ func (r *WxPrePayH) HandlerSD(mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 	return r.base.HandlerSD(
 		context.Background(),
-		cmn.MSTAG,
+		msTag,
 		"POST",
 		WxPrePay_H_PATH,
 		r.DecodeRequest,
@@ -98,7 +98,7 @@ func (r *WxPrePayH) HandlerSD(mid []endpoint.Middleware,
 func (r *WxPrePayH) ProxySD() endpoint.Endpoint {
 	return r.base.ProxyEndpointSD(
 		context.Background(),
-		cmn.MSTAG,
+		msTag,
 		"POST",
 		WxPrePay_H_PATH,
 		r.DecodeRequest,
