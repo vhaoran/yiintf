@@ -32,6 +32,11 @@ type BrokerInfo struct {
 	//使用平台大师 0:否 1：是
 	EnableMaster int `json:"enable_master"`
 
+	//使用平台悬赏貼
+	EnablePrize int `json:"enable_prize"`
+	//使用平台闪断貼
+	EnableVie int `json:"enable_vie"`
+
 	ServiceCode string `json:"service_code" gorm:"name:service_code;type:varchar(100);null;"`
 
 	//启用状态（0：停用 1：启用,默认启用）
