@@ -37,6 +37,11 @@ type YiOrder struct {
 	MasterNickRef string `json:"master_nick_ref"   bson:"master_nick_ref"`
 	//大师头像
 	MasterIconRef string `json:"master_icon_ref"   bson:"master_icon_ref"`
+
+	//服务项目的id,用于确定价格
+	YiCateID int64 `json:"yi_cate_id"   bson:"yi_cate_id"`
+	BrokerID int64 `json:"broker_id"   bson:"broker_id"`
+
 	//订单类型	 0：四柱 1：六爻 3:合婚   20 其它
 	OrderType int `json:"order_type"   bson:"order_type"`
 	//订单内容
