@@ -11,53 +11,54 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	tran "github.com/go-kit/kit/transport/http"
 	"github.com/vhaoran/vchat/lib/ykit"
+
+	"github.com/vhaoran/yiintf/userref"
 )
 
 const (
-	InnerProductRef_H_PATH = "/InnerProductRef"
+	InnerBrokerInfoGet_H_PATH = "/InnerBrokerInfoGet"
 )
 
 //获取用户所有好友
 type (
-	InnerProductRefService interface {
-		Exec(in *InnerProductRefIn) (*InnerProductRefOut, error)
+	InnerBrokerInfoGetService interface {
+		Exec(in *InnerBrokerInfoGetIn) (*InnerBrokerInfoGetOut, error)
 	}
 
 	//input data
-	InnerProductRefIn struct {
-		BrokerID  int64  `json:"broker_id"`
-		ProductID string `json:"product_id"`
+	InnerBrokerInfoGetIn struct {
+		BrokerID int64 `json:"broker_id"`
 	}
 
 	//output data
-	InnerProductRefOut struct {
-		Ok bool `json:"ok"`
+	InnerBrokerInfoGetOut struct {
+		userref.BrokerInfo
 	}
 
 	// handler implements
-	InnerProductRefH struct {
+	InnerBrokerInfoGetH struct {
 		base ykit.RootTran
 	}
 )
 
-func (r *InnerProductRefH) MakeLocalEndpoint(svc InnerProductRefService) endpoint.Endpoint {
+func (r *InnerBrokerInfoGetH) MakeLocalEndpoint(svc InnerBrokerInfoGetService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
 
-		in := request.(*InnerProductRefIn)
+		in := request.(*InnerBrokerInfoGetIn)
 		return svc.Exec(in)
 	}
 }
 
 //个人实现,参数不能修改
-func (r *InnerProductRefH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
-	return r.base.DecodeRequest(new(InnerProductRefIn), ctx, req)
+func (r *InnerBrokerInfoGetH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+	return r.base.DecodeRequest(new(InnerBrokerInfoGetIn), ctx, req)
 }
 
 //个人实现,参数不能修改
-func (r *InnerProductRefH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
-	var response *InnerProductRefOut
+func (r *InnerBrokerInfoGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
+	var response *InnerBrokerInfoGetOut
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
@@ -65,7 +66,7 @@ func (r *InnerProductRefH) DecodeResponse(_ context.Context, res *http.Response)
 }
 
 //handler for router，微服务本地接口，
-func (r *InnerProductRefH) HandlerLocal(service InnerProductRefService,
+func (r *InnerBrokerInfoGetH) HandlerLocal(service InnerBrokerInfoGetService,
 	mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 
@@ -84,39 +85,39 @@ func (r *InnerProductRefH) HandlerLocal(service InnerProductRefService,
 }
 
 //sd,proxy实现,用于etcd自动服务发现时的handler
-func (r *InnerProductRefH) HandlerSD(mid []endpoint.Middleware,
+func (r *InnerBrokerInfoGetH) HandlerSD(mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 	return r.base.HandlerSD(
 		context.Background(),
 		msTag,
 		"POST",
-		InnerProductRef_H_PATH,
+		InnerBrokerInfoGet_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse,
 		mid,
 		options...)
 }
 
-func (r *InnerProductRefH) ProxySD() endpoint.Endpoint {
+func (r *InnerBrokerInfoGetH) ProxySD() endpoint.Endpoint {
 	return r.base.ProxyEndpointSD(
 		context.Background(),
 		msTag,
 		"POST",
-		InnerProductRef_H_PATH,
+		InnerBrokerInfoGet_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse)
 }
 
 //只用于内部调用 ，不从风头调用
-var once_InnerProductRef sync.Once
-var local_InnerProductRef_EP endpoint.Endpoint
+var once_InnerBrokerInfoGet sync.Once
+var local_InnerBrokerInfoGet_EP endpoint.Endpoint
 
-func (r *InnerProductRefH) Call(in *InnerProductRefIn) (*InnerProductRefOut, error) {
-	once_InnerProductRef.Do(func() {
-		local_InnerProductRef_EP = new(InnerProductRefH).ProxySD()
+func (r *InnerBrokerInfoGetH) Call(in *InnerBrokerInfoGetIn) (*InnerBrokerInfoGetOut, error) {
+	once_InnerBrokerInfoGet.Do(func() {
+		local_InnerBrokerInfoGet_EP = new(InnerBrokerInfoGetH).ProxySD()
 	})
 	//
-	ep := local_InnerProductRef_EP
+	ep := local_InnerBrokerInfoGet_EP
 	//
 	result, err := ep(context.Background(), in)
 
@@ -124,5 +125,5 @@ func (r *InnerProductRefH) Call(in *InnerProductRefIn) (*InnerProductRefOut, err
 		return nil, err
 	}
 
-	return result.(*InnerProductRefOut), nil
+	return result.(*InnerBrokerInfoGetOut), nil
 }
