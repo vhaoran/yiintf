@@ -11,7 +11,7 @@ type AddrCommon struct {
 	Detail string `json:"detail"   bson:"detail"`
 
 	//
-	Mobile string `json:"mobile"   bson:"mobile"`
+	//Mobile string `json:"mobile"   bson:"mobile"`
 
 	//邮编
 	ZipCode string `json:"zipcode"   bson:"zipcode"`
