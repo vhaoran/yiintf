@@ -34,7 +34,10 @@ type (
 		Old    float64 `json:"old"`
 		Offset float64 `json:"offset"`
 
-		Price float64 `json:"price"`
+		Price  float64 `json:"price"`
+		//错误放这里
+
+		ErrStr string  `json:"err_str"`
 	}
 
 	// handler implements

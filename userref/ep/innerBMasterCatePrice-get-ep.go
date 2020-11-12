@@ -44,6 +44,8 @@ type (
 
 		//大师服务项目在代理上的价格
 		Price float64 `json:"price"`
+		//错误放这里
+		ErrStr string `json:"err_str"`
 	}
 
 	// handler implements
