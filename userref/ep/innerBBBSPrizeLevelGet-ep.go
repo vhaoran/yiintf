@@ -39,7 +39,9 @@ type (
 
 	//output data
 	InnerBBBSPrizeLevelGetOut struct {
-		Price float64 `json:"price"`
+		Old    float64 `json:"old"`
+		Offset float64 `json:"offset"`
+		Price  float64 `json:"price"`
 	}
 
 	// handler implements

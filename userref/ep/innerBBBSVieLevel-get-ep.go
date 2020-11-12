@@ -31,6 +31,9 @@ type (
 
 	//output data
 	InnerBBBSVieLevelGetOut struct {
+		Old    float64 `json:"old"`
+		Offset float64 `json:"offset"`
+
 		Price float64 `json:"price"`
 	}
 

@@ -39,6 +39,9 @@ type (
 
 	//output data
 	InnerBMasterCatePriceGetOut struct {
+		Old    float64 `json:"old"`
+		Offset float64 `json:"offset"`
+
 		//大师服务项目在代理上的价格
 		Price float64 `json:"price"`
 	}
