@@ -14,50 +14,51 @@ import (
 )
 
 const (
-	BBBSVieLevelGet_H_PATH = "/BBBSVieLevelGet"
+	BProductPriceGet_H_PATH = "/BProductPriceGet"
 )
 
 //获取用户所有好友
 type (
-	BBBSVieLevelGetService interface {
-		Exec(in *BBBSVieLevelGetIn) (*BBBSVieLevelGetOut, error)
+	InnerBProductPriceGetService interface {
+		Exec(in *InnerBProductPriceGetIn) (*InnerBProductPriceGetOut, error)
 	}
 
 	//input data
-	BBBSVieLevelGetIn struct {
-		BrokerID int64 `json:"broker_id"`
-		LevelID  int64 `json:"level_id"`
+	InnerBProductPriceGetIn struct {
+		BrokerID  int64  `json:"broker_id"`
+		ProductID string `json:"product_id"`
+		ColorCode string `json:"color_code"`
 	}
 
 	//output data
-	BBBSVieLevelGetOut struct {
+	InnerBProductPriceGetOut struct {
 		Price float64 `json:"price"`
 	}
 
 	// handler implements
-	BBBSVieLevelGetH struct {
+	InnerBProductPriceGetH struct {
 		base ykit.RootTran
 	}
 )
 
-func (r *BBBSVieLevelGetH) MakeLocalEndpoint(svc BBBSVieLevelGetService) endpoint.Endpoint {
+func (r *InnerBProductPriceGetH) MakeLocalEndpoint(svc InnerBProductPriceGetService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
 
-		in := request.(*BBBSVieLevelGetIn)
+		in := request.(*InnerBProductPriceGetIn)
 		return svc.Exec(in)
 	}
 }
 
 //个人实现,参数不能修改
-func (r *BBBSVieLevelGetH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
-	return r.base.DecodeRequest(new(BBBSVieLevelGetIn), ctx, req)
+func (r *InnerBProductPriceGetH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+	return r.base.DecodeRequest(new(InnerBProductPriceGetIn), ctx, req)
 }
 
 //个人实现,参数不能修改
-func (r *BBBSVieLevelGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
-	var response *BBBSVieLevelGetOut
+func (r *InnerBProductPriceGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
+	var response *InnerBProductPriceGetOut
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
@@ -65,7 +66,7 @@ func (r *BBBSVieLevelGetH) DecodeResponse(_ context.Context, res *http.Response)
 }
 
 //handler for router，微服务本地接口，
-func (r *BBBSVieLevelGetH) HandlerLocal(service BBBSVieLevelGetService,
+func (r *InnerBProductPriceGetH) HandlerLocal(service InnerBProductPriceGetService,
 	mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 
@@ -84,39 +85,39 @@ func (r *BBBSVieLevelGetH) HandlerLocal(service BBBSVieLevelGetService,
 }
 
 //sd,proxy实现,用于etcd自动服务发现时的handler
-func (r *BBBSVieLevelGetH) HandlerSD(mid []endpoint.Middleware,
+func (r *InnerBProductPriceGetH) HandlerSD(mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 	return r.base.HandlerSD(
 		context.Background(),
 		msTag,
 		"POST",
-		BBBSVieLevelGet_H_PATH,
+		BProductPriceGet_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse,
 		mid,
 		options...)
 }
 
-func (r *BBBSVieLevelGetH) ProxySD() endpoint.Endpoint {
+func (r *InnerBProductPriceGetH) ProxySD() endpoint.Endpoint {
 	return r.base.ProxyEndpointSD(
 		context.Background(),
 		msTag,
 		"POST",
-		BBBSVieLevelGet_H_PATH,
+		BProductPriceGet_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse)
 }
 
 //只用于内部调用 ，不从风头调用
-var once_BBBSVieLevelGet sync.Once
-var local_BBBSVieLevelGet_EP endpoint.Endpoint
+var once_InnerBProductPriceGet sync.Once
+var local_InnerBProductPriceGet_EP endpoint.Endpoint
 
-func (r *BBBSVieLevelGetH) Call(in *BBBSVieLevelGetIn) (*BBBSVieLevelGetOut, error) {
-	once_BBBSVieLevelGet.Do(func() {
-		local_BBBSVieLevelGet_EP = new(BBBSVieLevelGetH).ProxySD()
+func (r *InnerBProductPriceGetH) Call(in *InnerBProductPriceGetIn) (*InnerBProductPriceGetOut, error) {
+	once_InnerBProductPriceGet.Do(func() {
+		local_InnerBProductPriceGet_EP = new(InnerBProductPriceGetH).ProxySD()
 	})
 	//
-	ep := local_BBBSVieLevelGet_EP
+	ep := local_InnerBProductPriceGet_EP
 	//
 	result, err := ep(context.Background(), in)
 
@@ -124,5 +125,5 @@ func (r *BBBSVieLevelGetH) Call(in *BBBSVieLevelGetIn) (*BBBSVieLevelGetOut, err
 		return nil, nil
 	}
 
-	return result.(*BBBSVieLevelGetOut), nil
+	return result.(*InnerBProductPriceGetOut), nil
 }

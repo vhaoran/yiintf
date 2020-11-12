@@ -14,59 +14,58 @@ import (
 )
 
 //----------------------------------------------------
-// auth: whr  date:2020/10/2611:24--------------------------
+// auth: whr  date:2020/11/1216:48--------------------------
 // ####请勿擅改此功能代码####
-// 用途：：运营商闪断貼价格
+// 用途：获取bbs-prize分档价格上的价格
 // 适用场景：
-// 执行角色：
-//--------------------------------------------- 
+// 执行角色： levelPrice + offset
+//---------------------------------------------
+
 const (
-	InnerBLevelVie_H_PATH = "/InnerBLevelVie"
+	InnerBBBSPrizeLevelGet_H_PATH = "/InnerBBBSPrizeLevelGet"
 )
 
 //获取用户所有好友
 type (
-	InnerBLevelVieService interface {
-		Exec(in *InnerBLevelVieIn) (*InnerBLevelVieOut, error)
+	InnerBBBSPrizeLevelGetService interface {
+		Exec(in *InnerBBBSPrizeLevelGetIn) (*InnerBBBSPrizeLevelGetOut, error)
 	}
 
 	//input data
-	InnerBLevelVieIn struct {
+	InnerBBBSPrizeLevelGetIn struct {
 		BrokerID int64 `json:"broker_id"`
 		LevelID  int64 `json:"level_id"`
 	}
 
 	//output data
-	InnerBLevelVieOut struct {
-		BrokerID   int64 `json:"broker_id"`
-		LevelID    int64 `json:"level_id"`
-		LevelPrice int64 `json:"level_price"`
+	InnerBBBSPrizeLevelGetOut struct {
+		Price float64 `json:"price"`
 	}
 
 	// handler implements
-	InnerBLevelVieH struct {
+	BBBSPrizeLevelGetH struct {
 		base ykit.RootTran
 	}
 )
 
-func (r *InnerBLevelVieH) MakeLocalEndpoint(svc InnerBLevelVieService) endpoint.Endpoint {
+func (r *BBBSPrizeLevelGetH) MakeLocalEndpoint(svc InnerBBBSPrizeLevelGetService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
 
-		in := request.(*InnerBLevelVieIn)
+		in := request.(*InnerBBBSPrizeLevelGetIn)
 		return svc.Exec(in)
 	}
 }
 
 //个人实现,参数不能修改
-func (r *InnerBLevelVieH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
-	return r.base.DecodeRequest(new(InnerBLevelVieIn), ctx, req)
+func (r *BBBSPrizeLevelGetH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+	return r.base.DecodeRequest(new(InnerBBBSPrizeLevelGetIn), ctx, req)
 }
 
 //个人实现,参数不能修改
-func (r *InnerBLevelVieH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
-	var response *InnerBLevelVieOut
+func (r *BBBSPrizeLevelGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
+	var response *InnerBBBSPrizeLevelGetOut
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
@@ -74,7 +73,7 @@ func (r *InnerBLevelVieH) DecodeResponse(_ context.Context, res *http.Response) 
 }
 
 //handler for router，微服务本地接口，
-func (r *InnerBLevelVieH) HandlerLocal(service InnerBLevelVieService,
+func (r *BBBSPrizeLevelGetH) HandlerLocal(service InnerBBBSPrizeLevelGetService,
 	mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 
@@ -93,45 +92,45 @@ func (r *InnerBLevelVieH) HandlerLocal(service InnerBLevelVieService,
 }
 
 //sd,proxy实现,用于etcd自动服务发现时的handler
-func (r *InnerBLevelVieH) HandlerSD(mid []endpoint.Middleware,
+func (r *BBBSPrizeLevelGetH) HandlerSD(mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 	return r.base.HandlerSD(
 		context.Background(),
 		msTag,
 		"POST",
-		InnerBLevelVie_H_PATH,
+		InnerBBBSPrizeLevelGet_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse,
 		mid,
 		options...)
 }
 
-func (r *InnerBLevelVieH) ProxySD() endpoint.Endpoint {
+func (r *BBBSPrizeLevelGetH) ProxySD() endpoint.Endpoint {
 	return r.base.ProxyEndpointSD(
 		context.Background(),
 		msTag,
 		"POST",
-		InnerBLevelVie_H_PATH,
+		InnerBBBSPrizeLevelGet_H_PATH,
 		r.DecodeRequest,
 		r.DecodeResponse)
 }
 
 //只用于内部调用 ，不从风头调用
-var once_InnerBLevelVie sync.Once
-var local_InnerBLevelVie_EP endpoint.Endpoint
+var once_InnerBBBSPrizeLevelGet sync.Once
+var local_InnerBBBSPrizeLevelGet_EP endpoint.Endpoint
 
-func (r *InnerBLevelVieH) Call(in *InnerBLevelVieIn) (*InnerBLevelVieOut, error) {
-	once_InnerBLevelVie.Do(func() {
-		local_InnerBLevelVie_EP = new(InnerBLevelVieH).ProxySD()
+func (r *BBBSPrizeLevelGetH) Call(in *InnerBBBSPrizeLevelGetIn) (*InnerBBBSPrizeLevelGetOut, error) {
+	once_InnerBBBSPrizeLevelGet.Do(func() {
+		local_InnerBBBSPrizeLevelGet_EP = new(BBBSPrizeLevelGetH).ProxySD()
 	})
 	//
-	ep := local_InnerBLevelVie_EP
+	ep := local_InnerBBBSPrizeLevelGet_EP
 	//
 	result, err := ep(context.Background(), in)
 
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
 
-	return result.(*InnerBLevelVieOut), nil
+	return result.(*InnerBBBSPrizeLevelGetOut), nil
 }
