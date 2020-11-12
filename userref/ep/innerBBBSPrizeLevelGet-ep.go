@@ -47,12 +47,12 @@ type (
 	}
 
 	// handler implements
-	BBBSPrizeLevelGetH struct {
+	InnerBBBSPrizeLevelGetH struct {
 		base ykit.RootTran
 	}
 )
 
-func (r *BBBSPrizeLevelGetH) MakeLocalEndpoint(svc InnerBBBSPrizeLevelGetService) endpoint.Endpoint {
+func (r *InnerBBBSPrizeLevelGetH) MakeLocalEndpoint(svc InnerBBBSPrizeLevelGetService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
@@ -63,12 +63,12 @@ func (r *BBBSPrizeLevelGetH) MakeLocalEndpoint(svc InnerBBBSPrizeLevelGetService
 }
 
 //个人实现,参数不能修改
-func (r *BBBSPrizeLevelGetH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+func (r *InnerBBBSPrizeLevelGetH) DecodeRequest(ctx context.Context, req *http.Request) (interface{}, error) {
 	return r.base.DecodeRequest(new(InnerBBBSPrizeLevelGetIn), ctx, req)
 }
 
 //个人实现,参数不能修改
-func (r *BBBSPrizeLevelGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
+func (r *InnerBBBSPrizeLevelGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
 	var response *InnerBBBSPrizeLevelGetOut
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (r *BBBSPrizeLevelGetH) DecodeResponse(_ context.Context, res *http.Respons
 }
 
 //handler for router，微服务本地接口，
-func (r *BBBSPrizeLevelGetH) HandlerLocal(service InnerBBBSPrizeLevelGetService,
+func (r *InnerBBBSPrizeLevelGetH) HandlerLocal(service InnerBBBSPrizeLevelGetService,
 	mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 
@@ -96,7 +96,7 @@ func (r *BBBSPrizeLevelGetH) HandlerLocal(service InnerBBBSPrizeLevelGetService,
 }
 
 //sd,proxy实现,用于etcd自动服务发现时的handler
-func (r *BBBSPrizeLevelGetH) HandlerSD(mid []endpoint.Middleware,
+func (r *InnerBBBSPrizeLevelGetH) HandlerSD(mid []endpoint.Middleware,
 	options ...tran.ServerOption) *tran.Server {
 	return r.base.HandlerSD(
 		context.Background(),
@@ -109,7 +109,7 @@ func (r *BBBSPrizeLevelGetH) HandlerSD(mid []endpoint.Middleware,
 		options...)
 }
 
-func (r *BBBSPrizeLevelGetH) ProxySD() endpoint.Endpoint {
+func (r *InnerBBBSPrizeLevelGetH) ProxySD() endpoint.Endpoint {
 	return r.base.ProxyEndpointSD(
 		context.Background(),
 		msTag,
@@ -123,9 +123,9 @@ func (r *BBBSPrizeLevelGetH) ProxySD() endpoint.Endpoint {
 var once_InnerBBBSPrizeLevelGet sync.Once
 var local_InnerBBBSPrizeLevelGet_EP endpoint.Endpoint
 
-func (r *BBBSPrizeLevelGetH) Call(in *InnerBBBSPrizeLevelGetIn) (*InnerBBBSPrizeLevelGetOut, error) {
+func (r *InnerBBBSPrizeLevelGetH) Call(in *InnerBBBSPrizeLevelGetIn) (*InnerBBBSPrizeLevelGetOut, error) {
 	once_InnerBBBSPrizeLevelGet.Do(func() {
-		local_InnerBBBSPrizeLevelGet_EP = new(BBBSPrizeLevelGetH).ProxySD()
+		local_InnerBBBSPrizeLevelGet_EP = new(InnerBBBSPrizeLevelGetH).ProxySD()
 	})
 	//
 	ep := local_InnerBBBSPrizeLevelGet_EP
