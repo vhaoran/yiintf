@@ -1,6 +1,5 @@
 package ep
 
-//last update date 2020-04-21
 import (
 	"context"
 	"encoding/json"
@@ -13,30 +12,28 @@ import (
 	tran "github.com/go-kit/kit/transport/http"
 	"github.com/vhaoran/vchat/lib/ykit"
 
-	user_ref "github.com/vhaoran/yiintf/userref"
+	"github.com/vhaoran/yiintf/userref"
 )
 
 const (
 	InnerMasterInfoGet_H_PATH = "/InnerMasterInfoGet"
 )
 
-// postman
+//获取用户所有好友
 type (
 	InnerMasterInfoGetService interface {
-		Exec(ctx context.Context, in *InnerMasterInfoGetIn) (*ykit.Result, error)
+		Exec(in *InnerMasterInfoGetIn) (*InnerMasterInfoGetOut, error)
 	}
 
-	//input  data
+	//input data
 	InnerMasterInfoGetIn struct {
 		MasterID int64 `json:"master_id"`
 	}
 
 	//output data
-	//Result struct {
-	//	Code int         `json:"code"`
-	//	Msg  string      `json:"msg"`
-	//	Body interface{} `json:"data"`
-	//}
+	InnerMasterInfoGetOut struct {
+		userref.MasterInfoRef
+	}
 
 	// handler implements
 	InnerMasterInfoGetH struct {
@@ -46,11 +43,11 @@ type (
 
 func (r *InnerMasterInfoGetH) MakeLocalEndpoint(svc InnerMasterInfoGetService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		fmt.Println("#############  InnerMasterInfoGet ###########")
+		fmt.Println("#############  GetUserFriendsInner ###########")
 		spew.Dump(ctx)
 
 		in := request.(*InnerMasterInfoGetIn)
-		return svc.Exec(ctx, in)
+		return svc.Exec(in)
 	}
 }
 
@@ -61,7 +58,7 @@ func (r *InnerMasterInfoGetH) DecodeRequest(ctx context.Context, req *http.Reque
 
 //个人实现,参数不能修改
 func (r *InnerMasterInfoGetH) DecodeResponse(_ context.Context, res *http.Response) (interface{}, error) {
-	var response ykit.Result
+	var response *InnerMasterInfoGetOut
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
@@ -78,16 +75,11 @@ func (r *InnerMasterInfoGetH) HandlerLocal(service InnerMasterInfoGetService,
 		ep = f(ep)
 	}
 
-	before := tran.ServerBefore(ykit.Jwt2ctx())
-	opts := make([]tran.ServerOption, 0)
-	opts = append(opts, before)
-	opts = append(opts, options...)
-
 	handler := tran.NewServer(
 		ep,
 		r.DecodeRequest,
 		r.base.EncodeResponse,
-		opts...)
+		options...)
 	//handler = loggingMiddleware()
 	return handler
 }
@@ -120,7 +112,7 @@ func (r *InnerMasterInfoGetH) ProxySD() endpoint.Endpoint {
 var once_InnerMasterInfoGet sync.Once
 var local_InnerMasterInfoGet_EP endpoint.Endpoint
 
-func (r *InnerMasterInfoGetH) Call(in InnerMasterInfoGetIn) (*user_ref.MasterInfoRef, error) {
+func (r *InnerMasterInfoGetH) Call(in *InnerMasterInfoGetIn) (*InnerMasterInfoGetOut, error) {
 	once_InnerMasterInfoGet.Do(func() {
 		local_InnerMasterInfoGet_EP = new(InnerMasterInfoGetH).ProxySD()
 	})
@@ -130,10 +122,12 @@ func (r *InnerMasterInfoGetH) Call(in InnerMasterInfoGetIn) (*user_ref.MasterInf
 	result, err := ep(context.Background(), in)
 
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
 
-	ret := result.(*ykit.Result)
+	if result != nil {
+		return result.(*InnerMasterInfoGetOut), nil
+	}
 
-	return ret.Data.(*user_ref.MasterInfoRef), nil
+	return nil, nil
 }
