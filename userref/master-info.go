@@ -18,6 +18,9 @@ type MasterInfoRef struct {
 
 	Brief string `json:"brief" gorm:"name:brief;type:text;null;"`
 
+	//返点比例，值为30表示30%
+	Rebate float64 `json:"rebate" gorm:"name:rebate;null;"`
+
 	Rate       int64      `json:"rate"`
 	SignDate   ytime.Date `json:"sign_date"`
 	BestRate   int64      `json:"best_rate"`
