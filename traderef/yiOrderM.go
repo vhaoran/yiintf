@@ -3,6 +3,7 @@ package traderef
 import (
 	"time"
 
+	"github.com/vhaoran/vchat/common/ytime"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -62,7 +63,8 @@ type YiOrder struct {
 	// 订单状态	0:待付款 1：已付款 3 已处理  4 已退款
 	Stat int `json:"stat"   bson:"stat"`
 	//unix nano
-	OkDateInt int64 `json:"ok_date_int"   bson:"ok_date_int"`
+	//最后更新时间
+	LastUpdated ytime.Date `json:"last_updated"   bson:"last_updated"`
 }
 
 //六爻
