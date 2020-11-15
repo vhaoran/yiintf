@@ -7,7 +7,7 @@ import (
 
 func Test_aaa(t *testing.T) {
 	fmt.Println("abc")
-	_, err := new(InnerMasterInfoGetH).Call(InnerMasterInfoGetIn{})
+	_, err := new(InnerMasterInfoGetH).Call(&InnerMasterInfoGetIn{})
 
 	fmt.Println(err)
 }

@@ -61,6 +61,8 @@ type YiOrder struct {
 	TradeNo string `json:"trade_no"   bson:"trade_no"`
 	// 订单状态	0:待付款 1：已付款 3 已处理  4 已退款
 	Stat int `json:"stat"   bson:"stat"`
+	//unix nano
+	OkDateInt int64 `json:"ok_date_int"   bson:"ok_date_int"`
 }
 
 //六爻
