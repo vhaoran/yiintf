@@ -54,6 +54,9 @@ type YiOrder struct {
 	//金额
 	Amt float64 `json:"amt"   bson:"amt"`
 
+	//-测算结果----------------------
+	Diagnose string `json:"diagnose"   bson:"diagnose"`
+
 	//实付
 	PayAmt float64 `json:"pay_amt"   bson:"pay_amt"`
 	//支付类型	0:积分付款 1：支付宝 2：微信
