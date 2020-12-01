@@ -11,7 +11,7 @@ import (
 //---------------------------------------------
 //大师基本信息
 type MasterInfoRef struct {
-	UID      int64  `json:"uid" gorm:"unique_index:uid_multi;"`
+	UID      int64  `json:"uid" gorm:"unique_index:mi_uid_multi;"`
 	UserCode string `json:"user_code" gorm:"name:user_code;type:varchar(100);null;"`
 	Nick     string `json:"nick" gorm:"name:nick;type:text;null;"`
 	Icon     string `json:"icon" gorm:"name:icon;type:text;null;"`
