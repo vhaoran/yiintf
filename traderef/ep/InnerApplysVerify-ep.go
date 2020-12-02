@@ -123,5 +123,12 @@ func (r *InnerApplyVerifyH) Call(in *InnerApplyVerifyIn) (*InnerApplyVerifyOut, 
 	//
 	result, _ := ep(context.Background(), in)
 
-	return result.(*InnerApplyVerifyOut), nil
+	if result != nil {
+		return result.(*InnerApplyVerifyOut), nil
+	}
+
+	return &InnerApplyVerifyOut{
+		Ok:     false,
+		ErrStr: "未知原因，无法难",
+	}, nil
 }
