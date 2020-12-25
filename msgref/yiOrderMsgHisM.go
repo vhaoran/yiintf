@@ -6,7 +6,7 @@ import (
 )
 
 type YiOrderMsgHis struct {
-	ID primitive.ObjectID `json:"id"   bson:"_id"`
+	ID primitive.ObjectID `json:"id"   bson:"_id,omitempty"`
 	//是否客户: true: 客户 false：大师
 
 	//用户id

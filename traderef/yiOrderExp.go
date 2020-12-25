@@ -21,7 +21,7 @@ const Q_EXP_YI_ORDER = "queue_yi_order"
 
 //---------大师订单评价--------------------------------
 type YiOrderExp struct {
-	ID primitive.ObjectID `json:"id"   bson:"_id"`
+	ID primitive.ObjectID `json:"id"   bson:"_id,omitempty"`
 	//
 	CreateDate ytime.Date `json:"create_date"   bson:"create_date"`
 	//用于排序 time.unixNano

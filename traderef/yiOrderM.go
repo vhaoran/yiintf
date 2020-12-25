@@ -15,7 +15,7 @@ const YiOrder_back_4 = 4
 
 type YiOrder struct {
 	//id
-	ID primitive.ObjectID `json:"id"   bson:"_id"`
+	ID primitive.ObjectID `json:"id"   bson:"_id,omitempty"`
 	//
 	CreateDate time.Time `json:"create_date"   bson:"create_date"`
 	//用于排序 time.unixNano
