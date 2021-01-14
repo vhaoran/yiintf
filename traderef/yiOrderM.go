@@ -124,4 +124,7 @@ type YiOrderHeHun struct {
 	DayFeMale    int `json:"day_female"   bson:"day_female"`
 	HourFeMale   int `json:"hour_female"   bson:"hour_female"`
 	MinuteFeMale int `json:"minute_female"   bson:"minute_female"`
+
+	//是否已经评价
+	HasExp bool `json:"has_exp"   bson:"has_exp"`
 }
