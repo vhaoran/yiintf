@@ -45,7 +45,7 @@ type YiOrder struct {
 	BrokerName string `json:"broker_name"   bson:"broker_name"`
 
 	//订单类型	 0：四柱 1：六爻 3:合婚   20 其它
-	OrderType int `json:"order_type"   bson:"order_type"`
+	ContentType int `json:"content_type"   bson:"content_type"`
 	//订单内容
 	Content interface{} `json:"content"   bson:"content"`
 	//说明
